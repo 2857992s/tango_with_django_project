@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+{%extends'rango/base.html'%}
+<html>
+    <head>
+        <title>Rango</title>
+    </head>
+    {% block body_block %}
+        <h1></h1>
+        <div>
+            <form id="category_form" method="post">
+                {% csrf_token%}
+                {% for hidden in form.hidden_fields %}
+                    {{hidden}}
+                {% endfor %}
+                {% for field in form.visible_fields %}
+                    {{field.errors}}<br>
+                    {{field.help_text}}<br>
+                    {{field}}<br>
+                {% endfor %}<br>
+                <input type="submit" name="submit" value="Create Page" />
+            </form>
+        </div>
+    {% endblock %}
+</html>

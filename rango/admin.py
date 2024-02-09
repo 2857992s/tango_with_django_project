@@ -1,9 +1,7 @@
-from django.contrib import admin
 
 from django.contrib import admin
 from django.contrib.admin.sites import AdminSite
 from rango.models import Category, Page
-
 
 class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug':('name',)}

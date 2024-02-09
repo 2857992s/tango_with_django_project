@@ -3,7 +3,7 @@
 import os
 import sys
 
-
+sys.stderr  = sys.stdout
 def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'tango_with_django_project.settings')
     try:
