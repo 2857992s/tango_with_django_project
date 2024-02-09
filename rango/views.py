@@ -25,18 +25,22 @@ def index(request:HttpRequest):
         print("TEST COOKIE WORKED!")
         request.session.delete_test_cookie()
     visitor_cookie_handler(request)
-    context_dict['visits'] = request.session['visits']
 
     response= render(request, 'rango/index.html', context=context_dict)
+    visitor_cookie_handler_x(request,response)
     
     return response
 
 
 
-def about(request):
+def about(request:HttpRequest):
     
     visitor_cookie_handler(request)
-    response= render(request, 'rango/about.html',)
+
+    response= render(request, 'rango/about.html',{'visits':request.session['visits']})
+    visitor_cookie_handler_x(request,response)
+    
+
     return response
 
 
@@ -60,7 +64,7 @@ def add_category(request:HttpRequest):
     form = CategoryForm()
     if(request.method=='POST'):
         form= CategoryForm(request.POST)
-        if form.is_valid() and not Category.objects.all().contains(form):
+        if form.is_valid():
             form.save(commit=True)
             return redirect('/rango/')
         else:
@@ -160,6 +164,18 @@ def get_serverside_cookies(request:HttpRequest,cookie,default_val=None):
         val = default_val
     return val
 
+def visitor_cookie_handler_x(request:HttpRequest,response:HttpResponse):
+    visits =int(get_serverside_cookies(request,'visits','1'))
+    last_visit_cookie = get_serverside_cookies(request,'last_visit',str(datetime.now()))
+    last_visit_time = datetime.strptime(last_visit_cookie[:-7],'%Y-%m-%d %H:%M:%S')
+    if(datetime.now()-last_visit_time).days>0:
+        visits+=1
+        response.set_cookie('last_visit',datetime.now())
+    else:
+        response.set_cookie('last_visit',last_visit_time)
+        
+    response.set_cookie('visits',visits)
+
 
 def visitor_cookie_handler(request:HttpRequest):
     visits =int(get_serverside_cookies(request,'visits','1'))
@@ -170,4 +186,5 @@ def visitor_cookie_handler(request:HttpRequest):
         request.session['last_visit']= datetime.now()
     else:
         request.session['last_visit']=last_visit_cookie
+        
     request.session['visits']=visits

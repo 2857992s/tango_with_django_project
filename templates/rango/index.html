@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{% extends 'rango/base.html' %}
 {% load staticfiles %}
 
 <html>
@@ -7,7 +7,7 @@
     <title>Rango</title>
 </head>
 
-<body>
+{% block body_block %}
     <h1>Rango says {% if user.is_authenticated %} howdy {{user.username}} {% else %} hey there partner!{% endif %}</h1> <br />
         <strong>{{ boldmessage }}</strong>
     </div>
@@ -43,7 +43,6 @@
         <a href="/rango/add_category/">Add a New Category</a><br />
         <a href="/rango/about/">About</a><br />
         <img src="/static/images/rango.jpg" alt="Picture of Rango" /><br>
-        Visits: {{Visits}}
     </div>
 </body>
 

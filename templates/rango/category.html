@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{% extends 'rango/base.html' %}
 
 <html>
 
@@ -6,7 +6,7 @@
     <title>Rango</title>
 </head>
 
-<body>
+{% block body_block %}
     <a href="/rango/">Index</a><br />
     <div>
         {% if category %}
